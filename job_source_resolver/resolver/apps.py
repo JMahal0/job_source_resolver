@@ -21,7 +21,7 @@ class ResolverConfig(AppConfig):
             job_source = self.determine_job_source(opportunity, ResolverConfig.job_board_data)
             opportunity["Job Source"] = job_source
         
-        self.resolved_opportunities = job_opportunities
+        ResolverConfig.resolved_opportunities = job_opportunities
     
     # read and parse csv file and this method return a list of opportunities (dicts)
     def read_job_opportunity_csv(self, path):
