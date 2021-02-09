@@ -16,17 +16,14 @@ def job_source(request):
     save_models_to_db()
 
     query_string = request.GET.urlencode()
-    # print(query_string) #jobsource=Glassdoor
     job_source = query_string[10:]
-    # print(job_source)
 
     job_details_list = []
     jobs_with_correct_source = JobDataModel.objects.filter(job_source=job_source)
     if jobs_with_correct_source.exists():
-        print(jobs_with_correct_source[0])
         job_details_list = jobs_with_correct_source
 
-    context = {"job_details_list" : job_details_list}
+    context = {"job_details_list" : job_details_list, "source" : job_source}
     return render(request, "resolver/jobsource.html", context)
 
 # makes the model from the all the resolved opportunities and saves it in the db, if db is empty
