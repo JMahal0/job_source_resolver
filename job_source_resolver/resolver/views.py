@@ -7,7 +7,6 @@ def index(request):
     save_models_to_db()
 
     job_source_data = ResolverConfig.job_board_data
-    # print(job_source_data)
     job_board_list = job_source_data["job_boards"]
     
     context = {"job_board_list": job_board_list}
@@ -15,7 +14,20 @@ def index(request):
 
 def job_source(request):
     save_models_to_db()
-    return render(request, "resolver/jobsource.html")
+
+    query_string = request.GET.urlencode()
+    # print(query_string) #jobsource=Glassdoor
+    job_source = query_string[10:]
+    # print(job_source)
+
+    job_details_list = []
+    jobs_with_correct_source = JobDataModel.objects.filter(job_source=job_source)
+    if jobs_with_correct_source.exists():
+        print(jobs_with_correct_source[0])
+        job_details_list = jobs_with_correct_source
+
+    context = {"job_details_list" : job_details_list}
+    return render(request, "resolver/jobsource.html", context)
 
 # makes the model from the all the resolved opportunities and saves it in the db, if db is empty
 def save_models_to_db():

@@ -7,7 +7,7 @@
             background-color: #eee;
             margin-left: 50px;
             margin-right: 50px;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
 
         .grid-container {
@@ -70,7 +70,7 @@
     {% if job_board_list %}
     <div class="grid-container">
         {% for job_board in job_board_list %}
-        <div class="grid-item" onclick="window.location='/jobsource'">
+        <div class="grid-item" onclick="window.location='/jobsource?jobsource={{ job_board.name }}'">
             <div class="rating rate-{{job_board.rating}}">
                 {{ job_board.rating }}
             </div>

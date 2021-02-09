@@ -1,1 +1,64 @@
-im the job source list ye
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Source Details</title>
+    <style>
+        body {
+            background-color: #fff;
+            margin-left: 50px;
+            margin-right: 50px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr 2fr 4fr;
+        }
+
+        .grid-container > .grid-item {
+            margin-left: 1.5em;
+            margin-right: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Job Source: holder</h1>
+
+    <div class="grid-container">
+        <div class="grid-item bold">
+            ID
+        </div>
+        <div class="grid-item bold">
+            Company Name
+        </div>
+        <div class="grid-item bold">
+            Job Title
+        </div>
+        <div class="grid-item bold">
+            Job URL
+        </div>
+        {% for job_detail in job_details_list %}
+        <div class="grid-item">
+            {{ job_detail.id }}
+        </div>
+        <div class="grid-item">
+            {{ job_detail.company_name }}
+        </div>
+        <div class="grid-item">
+            {{ job_detail.job_title }}
+        </div>
+        <div class="grid-item">
+            {{ job_detail.job_url }}
+        </div>
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>
