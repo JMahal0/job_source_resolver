@@ -22,6 +22,7 @@ class ResolverConfig(AppConfig):
             opportunity["Job Source"] = job_source
         
         ResolverConfig.resolved_opportunities = job_opportunities
+        # self.part_e()
     
     # read and parse csv file and this method return a list of opportunities (dicts)
     def read_job_opportunity_csv(self, path):
@@ -55,3 +56,15 @@ class ResolverConfig(AppConfig):
         job_boards = json.load(f)
         f.close()
         return job_boards
+
+    def part_e(self):
+        fields = ["ID (primary key)", "Job Title", "Company Name", "Job URL", "Job Source"]
+        filename = "complete_job_source_resolution_data.csv"
+        
+        with open(filename, 'w') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow(fields)
+
+            for opp in ResolverConfig.resolved_opportunities:
+                row = [opp["ID (primary key)"], opp["Job Title"], opp["Company Name"], opp["Job URL"], opp["Job Source"]]
+                csvwriter.writerow(row)
