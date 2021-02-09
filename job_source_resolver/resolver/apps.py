@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 import json
-import os
 import csv
+
 
 class ResolverConfig(AppConfig):
     name = 'resolver'
@@ -9,13 +9,17 @@ class ResolverConfig(AppConfig):
     INPUT_CSV_PATH = "resolver/resources/job_opportunities.csv"
     JOB_BOARD_DATA_PATH = "resolver/resources/jobBoards.json"
 
+    resolved_opportunities = {"loaded" : False}
+
     def ready(self):
         job_opportunities = self.read_job_opportunity_csv(self.INPUT_CSV_PATH)
         job_board_data = self.load_job_board_data(self.JOB_BOARD_DATA_PATH)
 
         for opportunity in job_opportunities: #remove the 3
             job_source = self.determine_job_source(opportunity, job_board_data)
-            self.create_models(opportunity, job_source)
+            opportunity["Job Source"] = job_source
+        
+        self.resolved_opportunities["opportunities"] = job_opportunities
     
     # read and parse csv file and this method return a list of opportunities (dicts)
     def read_job_opportunity_csv(self, path):
@@ -42,10 +46,6 @@ class ResolverConfig(AppConfig):
             return "Company Website"
         else:
             return "Unknown"
-
-    # makes the model from the all the args and saves it in the db
-    def create_models(self, opportunities, job_source):
-        pass
 
     def load_job_board_data(self, path):
         f = open(path)
