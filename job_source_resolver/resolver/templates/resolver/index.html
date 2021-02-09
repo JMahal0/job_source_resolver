@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Source Menu</title>
+    <style>
+        body {
+            background-color: #eee;
+            margin-left: 50px;
+            margin-right: 50px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: minmax(220px, auto);
+        }
+
+        .grid-container > .grid-item {
+            background-color: white;
+            margin: 1em;
+        }
+
+        .grid-item:hover {
+            cursor: pointer;
+        }
+
+        .flex-container {
+            margin-top: 0.5em;
+            display: flex;
+        }
+
+        .icon {
+            flex: 1;
+            width: 80px;
+            object-fit: contain;
+            padding-left: 1em;
+            padding-right: 1em;
+        }
+
+        .description {
+            flex: 4;
+            margin: 1em;
+        }
+
+        .rating {
+            text-align: right;
+            margin-right: 1em;
+            margin-top: 4px;
+            font-size: smaller;
+        }
+
+        .rate-Great {
+            color: rgb(0, 110, 0);
+        }
+
+        .rate-Good {
+            color: rgb(141, 211, 36);
+        }
+
+        .rate-Okay {
+            color: rgb(209, 209, 0);
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Job Sources</h1>
+
+    {% if job_board_list %}
+    <div class="grid-container">
+        {% for job_board in job_board_list %}
+        <div class="grid-item" onclick="window.location='/jobsource'">
+            <div class="rating rate-{{job_board.rating}}">
+                {{ job_board.rating }}
+            </div>
+            <div class="flex-container">
+                <img class="icon" src="{{ job_board.logo_file }}">
+                <div class="description">
+                    {{ job_board.description }}
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+    {% else %}
+    Under maintenance
+    {% endif %}
+
+</body>
+</html>

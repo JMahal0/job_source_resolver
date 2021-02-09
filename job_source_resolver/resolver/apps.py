@@ -9,17 +9,19 @@ class ResolverConfig(AppConfig):
     INPUT_CSV_PATH = "resolver/resources/job_opportunities.csv"
     JOB_BOARD_DATA_PATH = "resolver/resources/jobBoards.json"
 
-    resolved_opportunities = {"loaded" : False}
+    resolved_opportunities = []
+    job_board_data = None
+
 
     def ready(self):
         job_opportunities = self.read_job_opportunity_csv(self.INPUT_CSV_PATH)
-        job_board_data = self.load_job_board_data(self.JOB_BOARD_DATA_PATH)
+        ResolverConfig.job_board_data = self.load_job_board_data(self.JOB_BOARD_DATA_PATH)
 
-        for opportunity in job_opportunities: #remove the 3
-            job_source = self.determine_job_source(opportunity, job_board_data)
+        for opportunity in job_opportunities:
+            job_source = self.determine_job_source(opportunity, ResolverConfig.job_board_data)
             opportunity["Job Source"] = job_source
         
-        self.resolved_opportunities["opportunities"] = job_opportunities
+        self.resolved_opportunities = job_opportunities
     
     # read and parse csv file and this method return a list of opportunities (dicts)
     def read_job_opportunity_csv(self, path):
@@ -35,6 +37,7 @@ class ResolverConfig(AppConfig):
             
 
     # opportunity is a dict and this method returns a string
+    # added classmethod to allow for unit testing without needing to mock
     @classmethod
     def determine_job_source(self, opportunity, job_board):
         board_list = job_board["job_boards"]
@@ -49,6 +52,6 @@ class ResolverConfig(AppConfig):
 
     def load_job_board_data(self, path):
         f = open(path)
-        job_board_data = json.load(f)
+        job_boards = json.load(f)
         f.close()
-        return job_board_data
+        return job_boards
